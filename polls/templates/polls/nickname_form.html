@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ survey.title }}</h2>
+    <p class="lead">{{ survey.description }}</p>
+    
+    <form method="post" action="{% url 'polls:survey_response' survey.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="nickname">닉네임을 입력하세요:</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">설문 시작하기</button>
+    </form>
+</div>
+{% endblock %} 

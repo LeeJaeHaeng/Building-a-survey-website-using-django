@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">설문조사 목록</h1>
+    
+    {% if survey_list %}
+    <div class="row">
+        {% for survey in survey_list %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ survey.title }}</h5>
+                    <p class="card-text">{{ survey.description }}</p>
+                    <div class="text-muted mb-3">게시일: {{ survey.pub_date|date:"Y년 m월 d일" }}</div>
+                    <a href="{% url 'polls:survey_response' survey.id %}" class="btn btn-primary">참여하기</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>현재 진행 중인 설문조사가 없습니다.</p>
+    {% endif %}
+</div>
+{% endblock %} 

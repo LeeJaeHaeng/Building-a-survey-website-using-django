@@ -1,0 +1,105 @@
+{% load poll_extras %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>설문조사 결과</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .question {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .choices {
+            list-style-type: none;
+            padding: 0;
+        }
+        .choice {
+            background-color: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .choice-text {
+            margin-bottom: 5px;
+        }
+        .vote-count {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .vote-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .vote-fill {
+            height: 100%;
+            background-color: #007bff;
+            border-radius: 10px;
+        }
+        .vote-percentage {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-weight: bold;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ question.question_text }}</h1>
+    
+    <div class="question">
+        <ul class="choices">
+            {% for choice in question.choice_set.all %}
+                <li class="choice">
+                    <div class="choice-text">{{ choice.choice_text }}</div>
+                    <div class="vote-count">{{ choice.votes }} 표</div>
+                    <div class="vote-percentage">
+                        {% if question.total_votes > 0 %}
+                            {{ choice.votes|div:question.total_votes|mul:100|floatformat:1 }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </div>
+                    <div class="vote-bar">
+                        <div class="vote-fill" style="width: {% if question.total_votes > 0 %}{{ choice.votes|div:question.total_votes|mul:100 }}{% else %}0{% endif %}%;"></div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="back-link">
+        <a href="{% url 'polls:detail' question.id %}">다시 투표하기</a>
+    </div>
+</body>
+</html> 
